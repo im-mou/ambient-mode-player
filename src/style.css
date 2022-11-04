@@ -44,7 +44,7 @@ h1 {
     inset: 45%;
     transform: scale(11, 11.5);
     filter: blur(4px);
-    opacity: 0.2;
+    opacity: 0.3;
 }
 
 canvas {

@@ -42,12 +42,13 @@ const draw = (canvas: HTMLCanvasElement, x: number, y: number) => {
 };
 
 export const updateCanvas = (seconds: number) => {
-    const { x, y } = getCoords(seconds);
+    const { x, y } = getCoords(seconds + BUFFER_FRAMES);
     if (seconds === 1) {
+        const { x: xS, y: yS } = getCoords(seconds);
         const firstCanvas = document.createElement('canvas');
         setCanvasAttrs(firstCanvas);
         immersiveEl.appendChild(firstCanvas);
-        draw(firstCanvas, x, y);
+        draw(firstCanvas, xS, yS);
     }
 
     if (seconds % BUFFER_FRAMES === 0) {
