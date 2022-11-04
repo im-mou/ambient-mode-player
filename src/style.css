@@ -1,0 +1,82 @@
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #0f0f0f;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+#app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.player {
+    position: relative;
+}
+.immersive {
+    z-index: -1;
+    position: absolute;
+    inset: 45%;
+    transform: scale(11, 11.5);
+    filter: blur(4px);
+    opacity: 0.2;
+}
+
+canvas {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+}
+
+canvas:last-child {
+    animation: fadein 3s linear;
+}
+
+video {
+    border-radius: 8px;
+    z-index: 1;
+    /* opacity: 0; */
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
