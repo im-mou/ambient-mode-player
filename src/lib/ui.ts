@@ -1,4 +1,5 @@
 import { videos } from '../data/videos';
+import { ArrayElement } from '../types';
 
 const htmlEl = document.querySelector<HTMLHtmlElement>('html')!;
 const settingsEl = document.querySelector<HTMLDivElement>('.settings')!;
@@ -20,7 +21,10 @@ const toggleDarkMode = () => {
     });
 };
 
-const setupVideoSelector = (videosList: typeof videos, onChange: (video: any) => void) => {
+const setupVideoSelector = (
+    videosList: typeof videos,
+    onChange: (video: ArrayElement<typeof videos>) => void,
+) => {
     videoSelectEl.innerHTML = `${videosList.map(
         video => `<option value="${video.hash}">${video.title}</option>`,
     )}`;
@@ -30,7 +34,10 @@ const setupVideoSelector = (videosList: typeof videos, onChange: (video: any) =>
     });
 };
 
-export const setupUI = (videosList: typeof videos, onChange: (video: any) => void) => {
+export const setupUI = (
+    videosList: typeof videos,
+    onChange: (video: ArrayElement<typeof videos>) => void,
+) => {
     toggleSettingPanel();
     toggleDarkMode();
     setupVideoSelector(videosList, onChange);

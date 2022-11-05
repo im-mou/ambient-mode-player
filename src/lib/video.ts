@@ -4,19 +4,20 @@ import { ArrayElement } from '../types';
 
 const cssRoot = document.querySelector<HTMLHtmlElement>(':root')!;
 
-export const loadVideo = ({
-    video,
-    videoEl,
-    onTick,
-}: {
-    video: ArrayElement<typeof videos>;
-    videoEl: HTMLVideoElement;
-    onTick: (seconds: number) => void;
-}) => {
+export const loadVideo = (
+    video: ArrayElement<typeof videos>,
+    videoEl: HTMLVideoElement,
+    onTick: (seconds: number) => void,
+) => {
     setVideoSrc(videoEl, `${video.path}/${video.filename}`, video.hash);
     onVideoTick(videoEl, onTick);
     cssRoot.style.setProperty('--frames-buffer', `${BUFFER_FRAMES}s`);
 };
+
+export const getVideoSize = (videoEl: HTMLVideoElement) => ({
+    height: videoEl.clientHeight,
+    width: videoEl.clientWidth,
+});
 
 const setVideoSrc = (videoEl: HTMLVideoElement, src: string, hash: string) => {
     videoEl.src = src;

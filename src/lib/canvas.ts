@@ -8,33 +8,39 @@ import {
 
 const getAllCanvas = () => document.querySelectorAll('.immersive canvas')!;
 
-export const updateCanvas = ({
-    immersiveContainerEl,
-    videoEl,
-    thumbnailsImage,
-    seconds,
-}: {
-    immersiveContainerEl: Element;
-    videoEl: HTMLVideoElement;
-    thumbnailsImage: HTMLImageElement;
-    seconds: number;
-}) => {
-    console.log(seconds);
+export const loadCanvas = (
+    immersiveContainerEl: Element,
+    thumbnailsImage: HTMLImageElement,
+    size: { height: number; width: number },
+) => {
+    // first render
+    const coords = getFrameCoords(size.height, size.width, 0);
+    renderCanvas(immersiveContainerEl, thumbnailsImage, coords);
+    // Seconds frame render
+    const coordsNext = getFrameCoords(size.height, size.width, BUFFER_FRAMES);
+    renderCanvas(immersiveContainerEl, thumbnailsImage, coordsNext);
+};
+
+export const onUpdateCanvas = (
+    immersiveContainerEl: Element,
+    thumbnailsImage: HTMLImageElement,
+    seconds: number,
+    size: { height: number; width: number },
+) => {
     if (seconds % BUFFER_FRAMES !== 0) return;
+    const coords = getFrameCoords(size.height, size.width, seconds + BUFFER_FRAMES);
+    renderCanvas(immersiveContainerEl, thumbnailsImage, coords);
+};
 
-    const { x, y } = getFrameCoords(
-        videoEl.clientHeight,
-        videoEl.clientWidth,
-        seconds + BUFFER_FRAMES,
-    );
-
-    const canvas = setCanvasAttrs(
-        videoEl.clientHeight,
-        videoEl.clientWidth,
-    )(document.createElement('canvas'));
+const renderCanvas = (
+    immersiveContainerEl: Element,
+    thumbnailsImage: HTMLImageElement,
+    coords: { x: number; y: number; h: number; w: number },
+) => {
+    const canvas = setCanvasAttrs(coords.h, coords.w)(document.createElement('canvas'));
 
     immersiveContainerEl.appendChild(canvas);
-    draw(canvas, thumbnailsImage, x, y);
+    draw(canvas, thumbnailsImage, coords.x, coords.y);
 
     const canvasList = getAllCanvas();
     if (canvasList.length > 2) {
@@ -44,7 +50,7 @@ export const updateCanvas = ({
 
 const setCanvasAttrs = (height: number, width: number) => (canvas: HTMLCanvasElement) => {
     const ratio = THUMBNAILS_SHEET_WIDTH / width;
-    canvas.width = THUMBNAILS_SHEET_WIDTH / THUMBNAIL_FRAMES_PER_AXIS;
+    canvas.width = THUMBNAIL_WIDTH;
     canvas.height = (height * ratio) / THUMBNAIL_FRAMES_PER_AXIS;
     return canvas;
 };
@@ -60,7 +66,7 @@ const getFrameCoords = (height: number, width: number, second: number) => {
         Math.floor((frameIndex * THUMBNAIL_WIDTH) / THUMBNAILS_SHEET_WIDTH) *
         ((height * ratio) / THUMBNAIL_FRAMES_PER_AXIS);
 
-    return { x, y };
+    return { x, y, h: height, w: width };
 };
 
 const draw = (canvas: HTMLCanvasElement, image: HTMLImageElement, x: number, y: number) => {
