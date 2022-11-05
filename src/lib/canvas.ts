@@ -5,18 +5,20 @@ import {
     THUMBNAIL_FRAMES_PER_AXIS,
     THUMBNAIL_WIDTH,
 } from '../helpers/constants';
+import dom from '../helpers/dom';
 
 const getAllCanvas = () => document.querySelectorAll('.immersive canvas')!;
+const getAllDebugCanvas = () => document.querySelectorAll('.debug-frames canvas')!;
 
 export const loadCanvas = (
     immersiveContainerEl: Element,
     thumbnailsImage: HTMLImageElement,
     size: { height: number; width: number },
 ) => {
-    // first render
+    // First render
     const coords = getFrameCoords(size.height, size.width, 0);
     renderCanvas(immersiveContainerEl, thumbnailsImage, coords);
-    // Seconds frame render
+    // Second frame render
     const coordsNext = getFrameCoords(size.height, size.width, BUFFER_FRAMES);
     renderCanvas(immersiveContainerEl, thumbnailsImage, coordsNext);
 };
@@ -38,13 +40,18 @@ const renderCanvas = (
     coords: { x: number; y: number; h: number; w: number },
 ) => {
     const canvas = setCanvasAttrs(coords.h, coords.w)(document.createElement('canvas'));
-
     immersiveContainerEl.appendChild(canvas);
     draw(canvas, thumbnailsImage, coords.x, coords.y);
-
     const canvasList = getAllCanvas();
-    if (canvasList.length > 2) {
-        canvasList.item(0).remove();
+
+    if (canvasList.length > 2) canvasList.item(0).remove();
+
+    if (window.immersive.debug) {
+        const canvasDebug = setCanvasAttrs(coords.h, coords.w)(document.createElement('canvas'));
+        dom.debugFramesEl.appendChild(canvasDebug);
+        draw(canvasDebug, thumbnailsImage, coords.x, coords.y);
+        const debugCanvasList = getAllDebugCanvas();
+        if (debugCanvasList.length > 2) debugCanvasList.item(0).remove();
     }
 };
 

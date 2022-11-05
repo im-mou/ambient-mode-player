@@ -33,7 +33,7 @@ const extractThumbnails = async (inputPath, outputPath, filename) => {
     // https://stackoverflow.com/a/53531794
     ffmpeg(inputPath)
         .on('start', () => {
-            console.log('Process started...');
+            console.log('Extracting thumbnails...');
         })
         .on('end', () => {
             console.log('Done!');
