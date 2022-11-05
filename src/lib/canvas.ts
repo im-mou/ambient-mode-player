@@ -5,15 +5,22 @@ import {
     THUMBNAIL_FRAMES_PER_AXIS,
     THUMBNAIL_WIDTH,
 } from '../helpers/constants';
-import domELs from '../helpers/domEls';
 
-const videoEl = domELs.videoEl;
-const immersiveEl = domELs.immersiveEl;
-const thumbnailsImage = domELs.thumbnailsImage;
-const getAllCanvas = domELs.getAllCanvas;
+const getAllCanvas = () => document.querySelectorAll('.immersive canvas')!;
 
-export const updateCanvas = (seconds: number) => {
-    // if (seconds % BUFFER_FRAMES !== 0) return;
+export const updateCanvas = ({
+    immersiveContainerEl,
+    videoEl,
+    thumbnailsImage,
+    seconds,
+}: {
+    immersiveContainerEl: Element;
+    videoEl: HTMLVideoElement;
+    thumbnailsImage: HTMLImageElement;
+    seconds: number;
+}) => {
+    console.log(seconds);
+    if (seconds % BUFFER_FRAMES !== 0) return;
 
     const { x, y } = getFrameCoords(
         videoEl.clientHeight,
@@ -21,9 +28,13 @@ export const updateCanvas = (seconds: number) => {
         seconds + BUFFER_FRAMES,
     );
 
-    const canvas = setCanvasAttrs(document.createElement('canvas'));
-    immersiveEl.appendChild(canvas);
-    draw(canvas, x, y);
+    const canvas = setCanvasAttrs(
+        videoEl.clientHeight,
+        videoEl.clientWidth,
+    )(document.createElement('canvas'));
+
+    immersiveContainerEl.appendChild(canvas);
+    draw(canvas, thumbnailsImage, x, y);
 
     const canvasList = getAllCanvas();
     if (canvasList.length > 2) {
@@ -31,14 +42,10 @@ export const updateCanvas = (seconds: number) => {
     }
 };
 
-const setCanvasAttrs = (canvas: HTMLCanvasElement) => {
-    const ratio = THUMBNAILS_SHEET_WIDTH / videoEl.clientWidth;
-    const width = THUMBNAILS_SHEET_WIDTH / THUMBNAIL_FRAMES_PER_AXIS;
-    const height = (videoEl.clientHeight * ratio) / THUMBNAIL_FRAMES_PER_AXIS;
-
-    canvas.height = height;
-    canvas.width = width;
-
+const setCanvasAttrs = (height: number, width: number) => (canvas: HTMLCanvasElement) => {
+    const ratio = THUMBNAILS_SHEET_WIDTH / width;
+    canvas.width = THUMBNAILS_SHEET_WIDTH / THUMBNAIL_FRAMES_PER_AXIS;
+    canvas.height = (height * ratio) / THUMBNAIL_FRAMES_PER_AXIS;
     return canvas;
 };
 
@@ -56,18 +63,8 @@ const getFrameCoords = (height: number, width: number, second: number) => {
     return { x, y };
 };
 
-const draw = (canvas: HTMLCanvasElement, x: number, y: number) => {
+const draw = (canvas: HTMLCanvasElement, image: HTMLImageElement, x: number, y: number) => {
     canvas
         .getContext('2d')!
-        .drawImage(
-            thumbnailsImage,
-            x,
-            y,
-            canvas.width,
-            canvas.height,
-            0,
-            0,
-            canvas.width,
-            canvas.height,
-        );
+        .drawImage(image, x, y, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
 };

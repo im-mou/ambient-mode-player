@@ -9,18 +9,21 @@ import { setupUI } from './lib/ui';
 import { ArrayElement } from './types';
 import domEL from './helpers/domEls';
 
-
-
 var selectedVideo: ArrayElement<typeof videos>;
 
 const setVideo = (video: ArrayElement<typeof videos>) => {
     selectedVideo = video;
-    loadVideo(selectedVideo, onVideoTick);
+    loadVideo({ video: selectedVideo, onTick: onVideoTick, videoEl: domEL.videoEl });
     loadThumbnailsImage(1);
 };
 
 const onVideoTick = (seconds: number) => {
-    updateCanvas(seconds);
+    updateCanvas({
+        seconds,
+        videoEl: domEL.videoEl,
+        thumbnailsImage: domEL.thumbnailsImage,
+        immersiveContainerEl: domEL.immersiveEl,
+    });
     updateThumbnailsImage(selectedVideo, seconds);
 };
 
