@@ -45,7 +45,7 @@ const extractThumbnails = async (inputPath, outputPath, filename) => {
         // scale=80:-1: resolution of 80p
         // tile=10x10: 100 screenshots per jpg file
         // -q:v 69: quality set to 69. 0=best, 69=worst?
-        .outputOptions('-q:v', '10', '-vf', 'fps=1,scale=80:-1,tile=10x10')
+        .outputOptions('-q:v', '10', '-vf', 'fps=1,scale=80:-1,tile=10x10,eq=saturation=1.5')
         .run();
 };
 

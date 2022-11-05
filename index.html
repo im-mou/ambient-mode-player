@@ -1,21 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="UTF-8" />
         <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Immersive</title>
+        <link rel="stylesheet" href="css/pico.min.css" />
+        <title>Youtube ambient mode</title>
     </head>
     <body>
-        <div id="app">
-            <div class="player">
-                <video height="auto" width="848" autoplay loop muted controls></video>
-                <div class="immersive">
-                    <!-- <canvas></canvas> -->
-                    <!-- <canvas></canvas> -->
+        <main class="container header">
+            <div class="grid">
+                <hgroup>
+                    <h2>Youtube ambient mode</h2>
+                    <h3>Immersive cinematic effect</h3>
+                </hgroup>
+                <div class="toolbar">
+                    <label for="settings-switch">
+                        <input
+                            type="checkbox"
+                            id="settings-switch"
+                            name="settings-switch"
+                            role="switch"
+                        />
+                        Options
+                    </label>
+                    <label for="darkmode-switch">
+                        <input
+                            type="checkbox"
+                            id="darkmode-switch"
+                            name="darkmode-switch"
+                            role="switch"
+                        />
+                        Dark mode
+                    </label>
                 </div>
             </div>
+
+            <div class="grid settings hidden">
+                <div class="grid left">
+                    <label for="select-video">
+                        Select a video
+                        <select id="select-video"></select>
+                    </label>
+                </div>
+                <div class="right">
+                    <div class="debug-frames">sdf</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="container">
+            <div class="cinematics">
+                <video height="auto" width="100%" autoplay loop muted controls></video>
+                <div class="immersive"></div>
+            </div>
         </div>
+
+        <!-- <footer class="container"><div>Github</div></footer> -->
+
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>
