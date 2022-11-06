@@ -1,6 +1,5 @@
 import {
     BUFFER_FRAMES,
-    LOADING_DELAY,
     THUMBNAILS_SHEET_WIDTH,
     THUMBNAIL_FRAMES_MAX_COUNT,
     THUMBNAIL_FRAMES_PER_AXIS,
@@ -38,8 +37,6 @@ export const onUpdateCanvas = (
 export const resetCanvas = (immersiveContainerEl: Element) => {
     immersiveContainerEl.innerHTML = '';
     dom.debugFramesEl.innerHTML = '';
-
-    return new Promise(resolve => setTimeout(resolve, LOADING_DELAY));
 };
 
 const renderCanvas = (

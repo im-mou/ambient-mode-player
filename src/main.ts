@@ -19,8 +19,9 @@ const setupImmersivePlayer = async (video: ArrayElement<typeof videos>) => {
     selectedVideo = video;
     stopVideo(dom.videoEl);
     resetCanvas(dom.immersiveEl);
-    await Promise.all([loadVideo(selectedVideo, dom.videoEl, onVideoTick), playVideo(dom.videoEl)]);
-    loadThumbnailsImage(dom.videoEl, dom.thumbnailsImage, 1);
+    await loadVideo(selectedVideo, dom.videoEl, onVideoTick);
+    await playVideo(dom.videoEl);
+    await loadThumbnailsImage(dom.videoEl, dom.thumbnailsImage, 1);
     loadCanvas(dom.immersiveEl, dom.thumbnailsImage, getVideoSize(dom.videoEl));
 };
 

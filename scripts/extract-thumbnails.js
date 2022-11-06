@@ -32,20 +32,14 @@ const extractThumbnails = async (inputPath, outputPath, filename) => {
 
     // https://stackoverflow.com/a/53531794
     ffmpeg(inputPath)
-        .on('start', () => {
-            console.log('Extracting thumbnails...');
-        })
+        .on('start', () => console.log('Extracting thumbnails...'))
         .on('end', () => {
             console.log('Done!');
             Promise.resolve();
         })
         .on('error', Promise.reject)
         .output(`${thumbnailsDir}/%d.jpg`)
-        // fps=1: 1 frame every 1 second
-        // scale=80:-1: resolution of 80p
-        // tile=10x10: 100 screenshots per jpg file
-        // -q:v 69: quality set to 69. 0=best, 69=worst?
-        .outputOptions('-q:v', '10', '-vf', 'fps=1,scale=80:-1,tile=10x10,eq=saturation=1.5')
+        .outputOptions('-q:v', '0', '-vf', 'fps=1,scale=80:-1,tile=10x10,eq=saturation=1.5')
         .run();
 };
 
