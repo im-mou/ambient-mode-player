@@ -6,7 +6,7 @@ const path = require('path');
 
 var argv = require('yargs/yargs')(process.argv.slice(2))
     .usage('Usage: yarn generate:thumbnails [options]')
-    .example('yarn generate:thumbnails --file ./videos/foo.mp4')
+    .example('yarn generate:thumbnails --file ./videos/foo.mp4 --output ./public')
     .alias('f', 'file')
     .nargs('f', 1)
     .describe('f', 'Load a file')
