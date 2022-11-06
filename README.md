@@ -2,7 +2,7 @@
 
 Explanation TBD
 
-# Contubuting
+# Contribute
 ### Stuff that would be nice to have:
 
 - Option to change frames buffer count.
