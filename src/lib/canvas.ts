@@ -1,5 +1,6 @@
 import {
     BUFFER_FRAMES,
+    LOADING_DELAY,
     THUMBNAILS_SHEET_WIDTH,
     THUMBNAIL_FRAMES_MAX_COUNT,
     THUMBNAIL_FRAMES_PER_AXIS,
@@ -34,6 +35,13 @@ export const onUpdateCanvas = (
     renderCanvas(immersiveContainerEl, thumbnailsImage, coords);
 };
 
+export const resetCanvas = (immersiveContainerEl: Element) => {
+    immersiveContainerEl.innerHTML = '';
+    dom.debugFramesEl.innerHTML = '';
+
+    return new Promise(resolve => setTimeout(resolve, LOADING_DELAY));
+};
+
 const renderCanvas = (
     immersiveContainerEl: Element,
     thumbnailsImage: HTMLImageElement,
@@ -43,16 +51,14 @@ const renderCanvas = (
     immersiveContainerEl.appendChild(canvas);
     draw(canvas, thumbnailsImage, coords.x, coords.y);
     const canvasList = getAllCanvas();
-
     if (canvasList.length > 2) canvasList.item(0).remove();
 
-    if (window.immersive.debug) {
-        const canvasDebug = setCanvasAttrs(coords.h, coords.w)(document.createElement('canvas'));
-        dom.debugFramesEl.appendChild(canvasDebug);
-        draw(canvasDebug, thumbnailsImage, coords.x, coords.y);
-        const debugCanvasList = getAllDebugCanvas();
-        if (debugCanvasList.length > 2) debugCanvasList.item(0).remove();
-    }
+    // Frames debug view
+    const canvasDebug = setCanvasAttrs(coords.h, coords.w)(document.createElement('canvas'));
+    dom.debugFramesEl.appendChild(canvasDebug);
+    draw(canvasDebug, thumbnailsImage, coords.x, coords.y);
+    const debugCanvasList = getAllDebugCanvas();
+    if (debugCanvasList.length > 2) debugCanvasList.item(0).remove();
 };
 
 const setCanvasAttrs = (height: number, width: number) => (canvas: HTMLCanvasElement) => {

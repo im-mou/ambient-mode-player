@@ -8,11 +8,9 @@ const darkmodeSwitchEl = document.querySelector<HTMLFormElement>('#darkmode-swit
 const videoSelectEl = document.querySelector<HTMLSelectElement>('#select-video')!;
 
 const toggleSettingPanel = () => {
-    window.immersive.debug = false;
     settingsSwitchEl.addEventListener('change', ({ target }) => {
         const value = (target as unknown as { checked: boolean })!.checked;
         settingsEl.classList[value ? 'remove' : 'add']('hidden');
-        window.immersive.debug = value;
     });
 };
 

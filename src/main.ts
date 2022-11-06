@@ -1,17 +1,14 @@
 import dom from './helpers/dom';
 import { videos } from './data/videos';
-import { loadVideo, getVideoSize, playVideo } from './lib/video';
-import { loadCanvas, onUpdateCanvas } from './lib/canvas';
+import { loadVideo, getVideoSize, playVideo, stopVideo } from './lib/video';
+import { loadCanvas, onUpdateCanvas, resetCanvas } from './lib/canvas';
 import { loadThumbnailsImage, updateThumbnailsImage } from './lib/thumbnails';
 import { setupUI } from './lib/ui';
 import { ArrayElement } from './types';
 
-import './styles/select.css';
 import './style.css';
 
-window.immersive = window.immersive || {};
-
-let selectedVideo: ArrayElement<typeof videos>;
+let selectedVideo = videos[0];
 
 const onVideoTick = (seconds: number) => {
     onUpdateCanvas(dom.immersiveEl, dom.thumbnailsImage, seconds, getVideoSize(dom.videoEl));
@@ -20,11 +17,10 @@ const onVideoTick = (seconds: number) => {
 
 const setupImmersivePlayer = async (video: ArrayElement<typeof videos>) => {
     selectedVideo = video;
-    await Promise.all([
-        loadVideo(video, dom.videoEl, onVideoTick),
-        loadThumbnailsImage(dom.videoEl, dom.thumbnailsImage, 1),
-    ]);
-    playVideo(dom.videoEl);
+    stopVideo(dom.videoEl);
+    resetCanvas(dom.immersiveEl);
+    await Promise.all([loadVideo(selectedVideo, dom.videoEl, onVideoTick), playVideo(dom.videoEl)]);
+    loadThumbnailsImage(dom.videoEl, dom.thumbnailsImage, 1);
     loadCanvas(dom.immersiveEl, dom.thumbnailsImage, getVideoSize(dom.videoEl));
 };
 

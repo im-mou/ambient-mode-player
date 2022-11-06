@@ -1,15 +1,16 @@
+import dom from '../helpers/dom';
 import { videos } from '../data/videos';
-import { LOADING_DELAY, THUMBNAIL_FRAMES_MAX_COUNT } from '../helpers/constants';
+import { THUMBNAIL_FRAMES_MAX_COUNT } from '../helpers/constants';
 import { ArrayElement } from '../types';
 
-export const loadThumbnailsImage = async (
+export const loadThumbnailsImage = (
     videoEl: HTMLVideoElement,
     image: HTMLImageElement,
     sheet: number,
 ) => {
     image.src = `thumbnails/${videoEl.dataset.hash!}/${sheet}.jpg`;
     videoEl.dataset.sheet = sheet.toString();
-    return new Promise(resolve => setTimeout(resolve, LOADING_DELAY));
+    dom.debugFramesImageEl.src = `thumbnails/${videoEl.dataset.hash!}/${sheet}.jpg`;
 };
 
 export const updateThumbnailsImage = (
